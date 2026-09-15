@@ -29,7 +29,7 @@ h1{font-size:48px;letter-spacing:16px;margin-top:18px;text-shadow:0 0 25px #00e5
 input{width:100%;background:#000;border:1px solid #00e5ff33;color:#fff;padding:5px;font-size:8px;margin-top:4px;border-radius:3px}
 .unlocked{color:#00ff88}.locked{color:#ff4444}
 </style></head><body>
-<div class="top"><span>ACE v5.1 FINAL // JARVIS • 512GB • VOICE LOCK • GEMINI + ELEVENLABS JARVIS VOICE</span><span id="clock"></span></div>
+<div class="top"><span>ACE v5.1 FINAL // JARVIS • 1TB • VOICE LOCK • GEMINI + ELEVENLABS JARVIS VOICE</span><span id="clock"></span></div>
 <div class="main">
 <div style="display:flex;flex-direction:column;gap:6px">
 <div class="card"><h3>🔒 KEYS & VOICE ID - SECURE</h3><div class="small" style="color:#ffcc00">⚠️ Keys stored ONLY on this phone, never on GitHub! Bots scan GitHub!</div>
@@ -39,7 +39,7 @@ input{width:100%;background:#000;border:1px solid #00e5ff33;color:#fff;padding:5
 <button class="btn" onclick="enrollVoice()">ENROLL MY VOICE</button>
 </div>
 <div class="card"><h3>● SYSTEM STATUS</h3><div class="small">ACE: <span style="color:#0f8">ONLINE</span> • LAT: <span id="lat" style="color:#0f8">0.3ms</span><br>POWER 98.7% <div class="bar"><div class="fill" style="width:98%"></div></div>PHONE: <span style="color:#0f8">LINKED</span> • BAT: <span id="bat">--</span></div></div>
-<div class="card"><h3>🧠 MEMORY 512GB</h3><div class="small">USED: <span id="memU">214GB</span> • FREE: 298GB<div class="bar"><div class="fill" id="memBar" style="width:42%"></div></div>LEARNED: <span id="learnC">0</span> commands<br>MODE: HUMANLIKE JARVIS</div></div>
+<div class="card"><h3>🧠 MEMORY 1TB</h3><div class="small">USED: <span id="memU">214GB</span> • FREE: 298GB<div class="bar"><div class="fill" id="memBar" style="width:42%"></div></div>LEARNED: <span id="learnC">0</span> commands<br>MODE: HUMANLIKE JARVIS</div></div>
 </div>
 <div class="center">
 <div class="core" id="core"><div class="dot"></div></div>
@@ -90,7 +90,7 @@ try{
 let res=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}/`,{
 method:'POST',
 headers:{'xi-api-key':ELEVEN_KEY,'Content-Type':'application/json'},
-body:JSON.stringify({text,model_id:'eleven_monolingual_v1',voice_settings:{stability:0.6,similarity_boost:0.85,style:0.5,use_speaker_boost:true}})
+body:JSON.stringify({text,model_id:'eleven_turbo_v2_5',voice_settings:{stability:0.6,similarity_boost:0.85,style:0.5,use_speaker_boost:true}})
 });
 if(!res.ok){let err=await res.text(); log('ElevenLabs Error: '+err.slice(0,80)); return false;}
 let blob=await res.blob(); let url=URL.createObjectURL(blob); let audio=new Audio(url); audio.play();
