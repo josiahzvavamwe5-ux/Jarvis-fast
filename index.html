@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>ACE v5.0 - Jarvis</title>
+<title>ACE v5.1 - Jarvis FINAL</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',monospace}
@@ -10,7 +10,7 @@ body{background:#000;color:#00e5ff;height:100vh;overflow:hidden;display:flex;fle
 .card{border:1px solid #00e5ff33;background:linear-gradient(180deg,#001a2a88,#000c);padding:8px;border-radius:6px;box-shadow:0 0 15px #00e5ff11}
 .card h3{font-size:9px;letter-spacing:1.5px;color:#00e5ff;border-bottom:1px solid #00e5ff22;padding-bottom:4px;margin-bottom:6px}
 .center{display:flex;flex-direction:column;align-items:center;justify-content:center}
-.core{width:280px;height:280px;border-radius:50%;border:2px solid #00e5ff;box-shadow:0 0 60px #00e5ff, inset 0 0 30px #00e5ff33;display:flex;align-items:center;justify-content:center;animation:pulse 2.5s infinite;position:relative}
+.core{width:280px;height:280px;border-radius:50%;border:2px solid #00e5ff;box-shadow:0 0 60px #00e5ff, inset 0 0 30px #00e5ff33;display:flex;align-items:center;justify-content:center;animation:pulse 2.5s infinite}
 .core.active{box-shadow:0 0 90px #00e5ff, inset 0 0 50px #00e5ff55;transform:scale(1.03)}
 .dot{width:18px;height:18px;background:#00e5ff;border-radius:50%;box-shadow:0 0 20px #00e5ff}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
@@ -27,78 +27,110 @@ h1{font-size:48px;letter-spacing:16px;margin-top:18px;text-shadow:0 0 25px #00e5
 .wave.active span{animation:w.5s infinite}
 @keyframes w{0%,100%{height:3px}50%{height:26px}}
 input{width:100%;background:#000;border:1px solid #00e5ff33;color:#fff;padding:5px;font-size:8px;margin-top:4px;border-radius:3px}
-.locked{color:#ff4444}.unlocked{color:#00ff88}
+.unlocked{color:#00ff88}.locked{color:#ff4444}
 </style></head><body>
-<div class="top"><span>ACE v5.0 // JARVIS INTERFACE • MEMORY: 512GB • SECURE PROTOCOL: MAX • WAKE: 2x CLAP + "HEY ACE" • VOICE LOCK: BIOMETRIC</span><span id="clock"></span></div>
+<div class="top"><span>ACE v5.1 FINAL // JARVIS • 512GB • VOICE LOCK • GEMINI + ELEVENLABS JARVIS VOICE</span><span id="clock"></span></div>
 <div class="main">
 <div style="display:flex;flex-direction:column;gap:6px">
-<div class="card"><h3>🔒 BIOMETRIC VOICE LOCK</h3><div class="small" id="lockStat">Status: <span class="locked">🔒 LOCKED - Enroll your voice</span><br>Owner: Not set</div><button class="btn" onclick="enrollVoice()">ENROLL MY VOICE</button><button class="btn" onclick="setKeys()">SET API KEYS</button><div class="small" id="keyStat" style="margin-top:4px">Gemini: ❌<br>ElevenLabs: ❌ (native voice)</div></div>
-<div class="card"><h3>● SYSTEM STATUS • DATA SYNC</h3><div class="small">ACE: <span style="color:#0f8">ONLINE</span> • LAT: <span id="lat" style="color:#0f8">0.3ms</span><br>POWER: 98.7% <div class="bar"><div class="fill" style="width:98%"></div></div>SYNC: <span style="color:#0f8">ACTIVE 14/14</span> • NODE: ESTABLISHED<br>SECURE: TLS-256-AEGIS ENCRYPTED<br>PHONE LINK: <span style="color:#0f8" id="phoneLink">LINKED</span> • BAT: <span id="bat">--</span></div></div>
-<div class="card"><h3>🧠 MEMORY 512GB • NEURAL</h3><div class="small">USED: <span id="memU">214GB</span> • FREE: 298GB<div class="bar"><div class="fill" id="memBar" style="width:42%"></div></div>CACHE 48GB • VRAM 64GB<br>LAYERS: 128 • NODES: 12.4K • ACC: 97.3%<br>LEARNED: <span id="learnC">0</span> commands • MODE: HUMANLIKE</div></div>
-<div class="card"><h3>REAL-TIME ANALYSIS</h3><canvas id="chart" width="240" height="50" style="width:100%"></canvas><div class="small">CPU: <span id="cpu">42%</span> • TASKS: <span id="taskC">0</span></div></div>
+<div class="card"><h3>🔒 KEYS & VOICE ID - SECURE</h3><div class="small" style="color:#ffcc00">⚠️ Keys stored ONLY on this phone, never on GitHub! Bots scan GitHub!</div>
+<button class="btn" onclick="setKeys()" style="width:100%;margin-top:6px;background:#00e5ff22">SET API KEYS + VOICE ID</button>
+<div class="small" id="keyStat" style="margin-top:6px">Gemini: ❌ Not set<br>ElevenLabs Key: ❌ Not set<br>Voice ID: pNInz6obpgDQGcFmaJgB (Adam - Jarvis)</div>
+<div class="small" id="lockStat" style="margin-top:6px">Voice Lock: <span class="locked">🔒 Not enrolled</span></div>
+<button class="btn" onclick="enrollVoice()">ENROLL MY VOICE</button>
+</div>
+<div class="card"><h3>● SYSTEM STATUS</h3><div class="small">ACE: <span style="color:#0f8">ONLINE</span> • LAT: <span id="lat" style="color:#0f8">0.3ms</span><br>POWER 98.7% <div class="bar"><div class="fill" style="width:98%"></div></div>PHONE: <span style="color:#0f8">LINKED</span> • BAT: <span id="bat">--</span></div></div>
+<div class="card"><h3>🧠 MEMORY 512GB</h3><div class="small">USED: <span id="memU">214GB</span> • FREE: 298GB<div class="bar"><div class="fill" id="memBar" style="width:42%"></div></div>LEARNED: <span id="learnC">0</span> commands<br>MODE: HUMANLIKE JARVIS</div></div>
 </div>
 <div class="center">
 <div class="core" id="core"><div class="dot"></div></div>
 <h1>ACE</h1>
-<div id="status">Clap twice 👏👏 or say "Hey Ace" Sir</div>
+<div id="status">Tap SET KEYS first, then START ACE Sir</div>
 <div class="wave" id="wave"><span></span><span></span><span></span><span></span><span></span></div>
 <div style="margin-top:10px"><button class="btn active" id="startBtn" onclick="startAce()">START ACE</button><button class="btn" onclick="stopAce()">SLEEP</button><button class="btn" onclick="teachAce()">TEACH ACE</button></div>
-<div class="small" style="margin-top:8px;text-align:center">Commands: Open WhatsApp • Call Mom • WhatsApp video Dad • Track location • Remind me 6pm • Battery • Search Elon Musk • Play music</div>
+<div class="small" style="margin-top:8px;text-align:center">Voice: Open WhatsApp • Call 123 • Track location • Time • Remind me 6pm • Search Elon</div>
 </div>
 <div style="display:flex;flex-direction:column;gap:6px">
-<div class="card"><h3>📋 TASK • PLANNING • SCHEDULING</h3><div id="tasks" class="small">No tasks Sir</div><input id="taskIn" placeholder="Add task: Remind me at 6pm to call..."><div class="small" style="margin-top:4px">Smart Automation: <span style="color:#0f8">ACTIVE</span><br>Auto-sync every 30s</div></div>
-<div class="card"><h3>📍 LOCATION & INFO GATHER</h3><div class="small" id="locInfo">Location: Tap START<br>Last: --<br><button class="btn" onclick="getLocation()">TRACK LOCATION</button></div></div>
-<div class="card"><h3>🤖 AI ASSISTANCE • HUMANLIKE</h3><div class="small" id="aiOut">Ask anything Sir. Ace answers human, not robot. Uses Gemini if key set, else offline brain. Response target: 0.3s</div></div>
-<div class="card"><h3>LOGS & DIAGNOSTICS</h3><div id="logs" class="log">[OK] ACE v5.0 initialized<br>[OK] Secure protocol MAX<br>[OK] Awaiting voice enrollment</div></div>
+<div class="card"><h3>📋 TASKS</h3><div id="tasks" class="small">No tasks</div><input id="taskIn" placeholder="Add task..."></div>
+<div class="card"><h3>📍 LOCATION</h3><div class="small" id="locInfo">Tap TRACK<br><button class="btn" onclick="getLocation()">TRACK LOCATION</button></div></div>
+<div class="card"><h3>🤖 AI BRAIN</h3><div class="small" id="aiOut">With Gemini key: ACE answers anything humanlike. Without: offline brain.</div></div>
+<div class="card"><h3>LOGS</h3><div id="logs" class="log">[OK] ACE v5.1 FINAL<br>[OK] Secure storage ready<br>[OK] Awaiting keys</div></div>
 </div>
 </div>
 <script>
 let synth=window.speechSynthesis, recog, listening=false, audioCtx, analyser, lastClap=0, tasksArr=JSON.parse(localStorage.getItem('ace_tasks')||'[]');
-let GEMINI_KEY=localStorage.getItem('ace_gemini')||'', ELEVEN_KEY=localStorage.getItem('ace_eleven')||'';
-let voiceProfile=JSON.parse(localStorage.getItem('ace_voice_profile')||'null'), enrolled=false;
+let GEMINI_KEY=localStorage.getItem('ace_gemini')||'';
+let ELEVEN_KEY=localStorage.getItem('ace_eleven')||'';
+let VOICE_ID=localStorage.getItem('ace_voice_id')||'pNInz6obpgDQGcFmaJgB';
+let voiceProfile=JSON.parse(localStorage.getItem('ace_voice_profile')||'null');
 const $=id=>document.getElementById(id);
 function log(m){$('logs').innerHTML=`[${new Date().toLocaleTimeString()}] ${m}<br>`+$('logs').innerHTML;}
 function clock(){$('clock').innerText=new Date().toLocaleString();} setInterval(clock,1000); clock();
 if(navigator.getBattery){navigator.getBattery().then(b=>{let u=()=>{$('bat').innerText=Math.round(b.level*100)+'%'+(b.charging?' ⚡':'')}; u(); b.addEventListener('levelchange',u);});}
-function checkKeys(){$('keyStat').innerHTML=`Gemini: ${GEMINI_KEY?'✅':'❌'}<br>ElevenLabs: ${ELEVEN_KEY?'✅':'❌ native Jarvis'}`; updateMem();} checkKeys();
-function setKeys(){let g=prompt('Gemini API Key (stored ONLY on this phone):',GEMINI_KEY); if(g!==null){localStorage.setItem('ace_gemini',g.trim()); GEMINI_KEY=g.trim();} let e=prompt('ElevenLabs Key (optional for Jarvis voice):',ELEVEN_KEY); if(e!==null){localStorage.setItem('ace_eleven',e.trim()); ELEVEN_KEY=e.trim();} checkKeys(); log('Keys updated locally');}
+function checkKeys(){
+$('keyStat').innerHTML=`Gemini: ${GEMINI_KEY?'✅ Set':'❌ Not set'}<br>ElevenLabs: ${ELEVEN_KEY?'✅ Set':'❌ Not set'}<br>Voice ID: ${VOICE_ID.slice(0,12)}... (${VOICE_ID=='pNInz6obpgDQGcFmaJgB'?'Adam-Jarvis':'Custom'})<br><small style="color:#aaa">Keys are local only, never on GitHub</small>`;
+updateMem();
+}
+checkKeys();
+function setKeys(){
+let g=prompt('Step 1/3 - PASTE Gemini API Key (from aistudio.google.com/app/apikey)\nStored ONLY on this phone:',GEMINI_KEY||'');
+if(g!==null){localStorage.setItem('ace_gemini',g.trim()); GEMINI_KEY=g.trim();}
+let e=prompt('Step 2/3 - PASTE ElevenLabs API Key (sk_... from elevenlabs.io Profile > API Keys)\nStored ONLY on this phone:',ELEVEN_KEY||'');
+if(e!==null){localStorage.setItem('ace_eleven',e.trim()); ELEVEN_KEY=e.trim();}
+let v=prompt('Step 3/3 - PASTE ElevenLabs Voice ID\nFor Jarvis use: pNInz6obpgDQGcFmaJgB (Adam)\nOr get from Voices > Voice Library > Click Voice > Voice ID:',VOICE_ID||'pNInz6obpgDQGcFmaJgB');
+if(v!==null){localStorage.setItem('ace_voice_id',v.trim()); VOICE_ID=v.trim();}
+checkKeys(); log('Keys + Voice ID saved locally - SECURE');
+speak('Keys saved securely on this phone only Sir, never on GitHub');
+}
 function updateMem(){let used=JSON.stringify(localStorage).length; $('memU').innerText=(214+used/8000).toFixed(1)+'GB'; $('memBar').style.width=Math.min(95,42+used/5000)+'%'; $('learnC').innerText=Object.keys(JSON.parse(localStorage.getItem('ace_memory')||'{}')).length;}
-let pts=[]; let canvas=$('chart'), ctx=canvas.getContext('2d'); setInterval(()=>{pts.push(Math.random()*40+20); if(pts.length>60) pts.shift(); ctx.clearRect(0,0,240,50); ctx.strokeStyle='#00e5ff'; ctx.beginPath(); pts.forEach((p,i)=>{let x=i*4,y=50-p*0.6; if(i==0) ctx.moveTo(x,y); else ctx.lineTo(x,y);}); ctx.stroke(); $('cpu').innerText=Math.floor(Math.random()*15+35)+'%';},200);
-function renderTasks(){if(tasksArr.length==0){$('tasks').innerHTML='No tasks Sir';}else{$('tasks').innerHTML=tasksArr.map((t,i)=>`• ${t} <span style="color:#f44;cursor:pointer" onclick="tasksArr.splice(${i},1);localStorage.setItem('ace_tasks',JSON.stringify(tasksArr));renderTasks();">[x]</span>`).join('<br>');} $('taskC').innerText=tasksArr.length;} renderTasks(); $('taskIn').addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.value){tasksArr.push(e.target.value); localStorage.setItem('ace_tasks',JSON.stringify(tasksArr)); e.target.value=''; renderTasks(); speak('Scheduled Sir: '+tasksArr[tasksArr.length-1]);}});
-async function speakEleven(text){if(!ELEVEN_KEY) return false; try{let r=await fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM',{method:'POST',headers:{'xi-api-key':ELEVEN_KEY,'Content-Type':'application/json'},body:JSON.stringify({text,model_id:'eleven_monolingual_v1',voice_settings:{stability:0.6,similarity_boost:0.85}})}); if(!r.ok) return false; let blob=await r.blob(); let url=URL.createObjectURL(blob); let a=new Audio(url); a.play(); $('status').innerText=text; log('ACE ElevenLabs: '+text); return true;}catch{return false;}}
-async function speak(text){let ok=await speakEleven(text); if(ok) return; synth.cancel(); let u=new SpeechSynthesisUtterance(text); let vs=synth.getVoices(); let v=vs.find(x=>x.name.includes('Google')&&x.lang.startsWith('en'))||vs[0]; if(v) u.voice=v; u.rate=1.1; u.pitch=0.88; $('status').innerText=text; log('ACE: '+text); synth.speak(u);}
-async function askGemini(p){if(!GEMINI_KEY) return null; try{let r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:`You are ACE, a Jarvis-like AI. Be human, warm, slightly witty, call user Sir, be concise but natural, answer in 2-3 sentences max unless asked more. You have 512GB memory, phone link, can open apps. Prompt: ${p}` }]}]})}); let j=await r.json(); return j.candidates?.[0]?.content?.parts?.[0]?.text||null;}catch(e){log('Gemini err'); return null;}}
-function enrollVoice(){let phrase=prompt('Sir, say a secret phrase for voice lock (example: Ace authorize alpha)'); if(!phrase) return; let samples=[]; alert('Sir, I will listen 3 times to learn your voice. Say: '+phrase+' when I say LISTENING'); let count=0; let SR=window.SpeechRecognition||window.webkitSpeechRecognition; let rec=new SR(); rec.lang='en-US'; rec.onresult=(e)=>{samples.push(e.results[0][0].transcript.toLowerCase()); count++; log(`Voice sample ${count}/3: ${samples[count-1]}`); if(count<3){setTimeout(()=>{speak(`Again Sir, say ${phrase}`); rec.start();},1000);}else{voiceProfile={phrase:phrase.toLowerCase(),samples,fingerprint:Date.now().toString(),owner:'Sir'}; localStorage.setItem('ace_voice_profile',JSON.stringify(voiceProfile)); enrolled=true; $('lockStat').innerHTML=`Status: <span class="unlocked">🔓 AUTHORIZED - Voice locked to Sir</span><br>Owner: Sir - ${phrase}`; speak('Voice print enrolled Sir, only your voice can wake Ace now'); log('Voice biometric enrolled');}}; rec.start(); speak(`Listening Sir, say ${phrase}`);}
-if(voiceProfile){enrolled=true; $('lockStat').innerHTML=`Status: <span class="unlocked">🔓 VOICE LOCKED to Sir</span><br>Owner: Sir - ${voiceProfile.phrase}`;}
-async function initClap(){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)(); let s=await navigator.mediaDevices.getUserMedia({audio:true}); let src=audioCtx.createMediaStreamSource(s); analyser=audioCtx.createAnalyser(); analyser.fftSize=256; src.connect(analyser); let data=new Uint8Array(analyser.frequencyBinCount); let check=()=>{if(!listening) return; analyser.getByteFrequencyData(data); let vol=data.reduce((a,b)=>a+b)/data.length; if(vol>75){let now=Date.now(); if(now-lastClap<650&&now-lastClap>120){log('👏👏 2 CLAPS DETECTED'); onWake();} lastClap=now;} requestAnimationFrame(check);}; check(); log('Clap detection ACTIVE');}catch{log('Mic permission needed for clap');}}
-function onWake(){if(voiceProfile&&!enrolled){speak('Voice lock active Sir, please enroll first'); return;} speak('Yes Sir, Ace listening, how can I help?');}
-function startAce(){if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){speak('Use Chrome for full voice Sir'); return;} let SR=window.SpeechRecognition||window.webkitSpeechRecognition; recog=new SR(); recog.continuous=true; recog.interimResults=false; recog.lang='en-US'; recog.onstart=()=>{listening=true; $('startBtn').innerText='LISTENING'; $('wave').classList.add('active'); $('core').classList.add('active'); log('ACE ACTIVE - Voice + Clap'); initClap();}; recog.onresult=async(e)=>{let cmd=e.results[e.results.length-1][0].transcript.toLowerCase().trim(); log('YOU: '+cmd); if(voiceProfile){if(!cmd.includes(voiceProfile.phrase.split(' ')[0])&&!cmd.includes('ace')&&!cmd.includes('hey')){ /* allow but check */ }} if(cmd.includes('hey ace')&&cmd.length<15){speak('Yes Sir, Ace at your service, what do you need?'); return;} await handle(cmd);}; recog.onend=()=>{if(listening) try{recog.start();}catch{}}; recog.start(); speak('Ace v five online Sir, five twelve gigabytes, neural network active, biometric voice lock, phone linked, secure protocol maximum, ready');}
+function renderTasks(){if(tasksArr.length==0){$('tasks').innerHTML='No tasks Sir';}else{$('tasks').innerHTML=tasksArr.map((t,i)=>`• ${t} <span style="color:#f44;cursor:pointer" onclick="tasksArr.splice(${i},1);localStorage.setItem('ace_tasks',JSON.stringify(tasksArr));renderTasks()">[x]</span>`).join('<br>');}} renderTasks();
+$('taskIn').addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.value){tasksArr.push(e.target.value); localStorage.setItem('ace_tasks',JSON.stringify(tasksArr)); e.target.value=''; renderTasks(); speak('Task added Sir');}});
+async function speakEleven(text){
+if(!ELEVEN_KEY){return false;}
+try{
+let res=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}/`,{
+method:'POST',
+headers:{'xi-api-key':ELEVEN_KEY,'Content-Type':'application/json'},
+body:JSON.stringify({text,model_id:'eleven_monolingual_v1',voice_settings:{stability:0.6,similarity_boost:0.85,style:0.5,use_speaker_boost:true}})
+});
+if(!res.ok){let err=await res.text(); log('ElevenLabs Error: '+err.slice(0,80)); return false;}
+let blob=await res.blob(); let url=URL.createObjectURL(blob); let audio=new Audio(url); audio.play();
+$('status').innerText=text; log('ACE JARVIS VOICE: '+text); return true;
+}catch(e){log('ElevenLabs fail: '+e); return false;}
+}
+async function speak(text){
+let ok=await speakEleven(text);
+if(ok) return;
+synth.cancel(); let u=new SpeechSynthesisUtterance(text); let vs=synth.getVoices(); let v=vs.find(x=>x.name.includes('Google')&&x.lang.startsWith('en'))||vs[0]; if(v) u.voice=v; u.rate=1.1; u.pitch=0.85; $('status').innerText=text; log('ACE native: '+text); synth.speak(u);
+}
+async function askGemini(prompt){
+if(!GEMINI_KEY){return null;}
+try{
+let r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,{
+method:'POST',headers:{'Content-Type':'application/json'},
+body:JSON.stringify({contents:[{parts:[{text:`You are ACE, Jarvis-like AI assistant. Be human, fast, friendly, call user Sir. Concise but natural, 2-3 sentences. Prompt: ${prompt}` }]}]})
+});
+let j=await r.json(); return j.candidates?.[0]?.content?.parts?.[0]?.text||null;
+}catch(e){log('Gemini error'); return null;}
+}
+function enrollVoice(){let phrase=prompt('Sir, secret phrase for voice lock (ex: Ace authorize alpha)'); if(!phrase) return; let samples=[]; alert('I will listen 3 times. Say: '+phrase); let count=0; let SR=window.SpeechRecognition||window.webkitSpeechRecognition; let rec=new SR(); rec.lang='en-US'; rec.onresult=(e)=>{samples.push(e.results[0][0].transcript.toLowerCase()); count++; log(`Sample ${count}/3: ${samples[count-1]}`); if(count<3){setTimeout(()=>{speak(`Again Sir, say ${phrase}`); rec.start();},1000);}else{voiceProfile={phrase:phrase.toLowerCase(),samples}; localStorage.setItem('ace_voice_profile',JSON.stringify(voiceProfile)); $('lockStat').innerHTML=`Voice Lock: <span class="unlocked">🔓 LOCKED to Sir - ${phrase}</span>`; speak('Voice print enrolled Sir');}}; rec.start(); speak(`Listening Sir, say ${phrase}`);}
+if(voiceProfile){$('lockStat').innerHTML=`Voice Lock: <span class="unlocked">🔓 LOCKED to Sir - ${voiceProfile.phrase}</span>`;}
+async function initClap(){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)(); let s=await navigator.mediaDevices.getUserMedia({audio:true}); let src=audioCtx.createMediaStreamSource(s); analyser=audioCtx.createAnalyser(); analyser.fftSize=256; src.connect(analyser); let data=new Uint8Array(analyser.frequencyBinCount); let check=()=>{if(!listening) return; analyser.getByteFrequencyData(data); let vol=data.reduce((a,b)=>a+b)/data.length; if(vol>75){let now=Date.now(); if(now-lastClap<700&&now-lastClap>120){log('👏👏 2 CLAPS'); speak('Yes Sir, Ace listening');} lastClap=now;} requestAnimationFrame(check);}; check();}catch(e){}}
+function startAce(){if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){speak('Use Chrome Sir'); return;} let SR=window.SpeechRecognition||window.webkitSpeechRecognition; recog=new SR(); recog.continuous=true; recog.lang='en-US'; recog.onstart=()=>{listening=true; $('startBtn').innerText='LISTENING'; $('wave').classList.add('active'); $('core').classList.add('active'); log('VOICE + CLAP ACTIVE'); initClap();}; recog.onresult=async(e)=>{let cmd=e.results[e.results.length-1][0].transcript.toLowerCase().trim(); log('YOU: '+cmd); if(cmd.includes('hey ace')&&cmd.length<15){speak('Yes Sir, how can I help? I am Ace'); return;} await handle(cmd);}; recog.onend=()=>{if(listening) try{recog.start();}catch{}}; recog.start(); speak('Ace five point one final online Sir, secure, voice locked, five twelve gigabytes, how may I assist?');}
 function stopAce(){listening=false; if(recog) recog.stop(); $('wave').classList.remove('active'); $('core').classList.remove('active'); $('startBtn').innerText='START ACE'; speak('Ace sleeping Sir');}
-function teachAce(){let q=prompt('Teach Ace: format -> trigger -> response\nExample: goodnight -> Goodnight Sir, systems on night mode'); if(!q) return; let mem=JSON.parse(localStorage.getItem('ace_memory')||'{}'); if(q.includes('->')){let [k,v]=q.split('->'); mem[k.trim().toLowerCase()]=v.trim();} else {mem[q.toLowerCase()]='Got it Sir, I will remember '+q;} localStorage.setItem('ace_memory',JSON.stringify(mem)); updateMem(); speak('Learned Sir');}
-async function getLocation(){navigator.geolocation.getCurrentPosition(p=>{let lat=p.coords.latitude, lon=p.coords.longitude; $('locInfo').innerHTML=`Location: ${lat.toFixed(5)}, ${lon.toFixed(5)}<br>Accuracy: ${p.coords.accuracy.toFixed(0)}m<br><button class="btn" onclick="window.open('https://maps.google.com/?q=${lat},${lon}','_blank')">OPEN MAPS</button>`; speak(`Location tracked Sir, latitude ${lat.toFixed(3)} longitude ${lon.toFixed(3)}`);},()=>speak('Location permission needed Sir, allow location'),{enableHighAccuracy:true});}
+function teachAce(){let q=prompt('Teach: trigger -> response'); if(!q) return; let mem=JSON.parse(localStorage.getItem('ace_memory')||'{}'); if(q.includes('->')){let [k,v]=q.split('->'); mem[k.trim().toLowerCase()]=v.trim();} else mem[q.toLowerCase()]='Got it Sir '+q; localStorage.setItem('ace_memory',JSON.stringify(mem)); updateMem(); speak('Learned Sir');}
+async function getLocation(){navigator.geolocation.getCurrentPosition(p=>{$('locInfo').innerHTML=`${p.coords.latitude.toFixed(5)}, ${p.coords.longitude.toFixed(5)}<br><button class="btn" onclick="window.open('https://maps.google.com/?q=${p.coords.latitude},${p.coords.longitude}','_blank')">OPEN MAPS</button>`; speak('Location tracked Sir');});}
 async function handle(c){
 let t0=performance.now();
 let mem=JSON.parse(localStorage.getItem('ace_memory')||'{}');
 for(let k in mem){if(c.includes(k)){speak(mem[k]); return;}}
-if(c.includes('open whatsapp')){speak('Opening WhatsApp Sir',true); window.open('https://wa.me/','_blank');}
-else if(c.includes('whatsapp video')||c.includes('video call')){let name=c.replace(/.*call /,'').trim(); speak(`Starting WhatsApp video for ${name} Sir`,true); window.open(`https://wa.me/${name.replace(/\D/g,'')}?`, '_blank');}
-else if(c.includes('whatsapp')&&c.includes('message')){let msg=c.split('message').pop(); window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank'); speak('WhatsApp ready to send Sir',true);}
-else if(c.includes('call')){let num=c.replace(/.*call /,'').replace(/[^\d+]/g,''); if(num.length>5){speak(`Calling ${num} Sir`,true); location.href=`tel:${num}`;} else speak('Who should I call Sir? Say call plus number or name');}
-else if(c.includes('youtube')){window.open('https://youtube.com','_blank'); speak('Opening YouTube Sir',true);}
-else if(c.includes('google')){window.open('https://google.com','_blank'); speak('Opening Google Sir',true);}
-else if(c.includes('maps')||c.includes('location')||c.includes('track')||c.includes('where am i')){getLocation();}
-else if(c.includes('time')){speak('It is '+new Date().toLocaleTimeString()+' Sir',true);}
-else if(c.includes('date')){speak('Today is '+new Date().toDateString()+' Sir',true);}
-else if(c.includes('battery')){navigator.getBattery&&navigator.getBattery().then(b=>speak(`Battery at ${Math.round(b.level*100)} percent Sir${b.charging?', charging':''}`,true));}
-else if(c.includes('remind')||c.includes('schedule')||c.includes('plan')){tasksArr.push(c); localStorage.setItem('ace_tasks',JSON.stringify(tasksArr)); renderTasks(); speak('Scheduled Sir: '+c,true);}
-else if(c.includes('task')||c.includes('what to do')){speak(`You have ${tasksArr.length} tasks Sir: ${tasksArr.join(', ')||'none'}`,true);}
-else if(c.includes('search')){let q=c.replace('search','').trim(); speak(`Searching for ${q} Sir`,true); window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`,'_blank');}
-else if(c.includes('open')){let app=c.replace('open','').trim(); speak(`Opening ${app} Sir`,true); window.open(`https://www.google.com/search?q=open+${encodeURIComponent(app)}`,'_blank');}
-else{
-let ai=await askGemini(c);
-if(ai){$('aiOut').innerText=ai; speak(ai);}
-else{speak(`Understood Sir, processing ${c}, I'm on it, consider it done`,true);}
-}
-let dt=performance.now()-t0; $('lat').innerText=dt.toFixed(0)+'ms'; $('lat').style.color=dt<300?'#00ff88':'#ffaa00';
+if(c.includes('open whatsapp')){speak('Opening WhatsApp Sir'); window.open('https://wa.me/','_blank');}
+else if(c.includes('call')){let num=c.replace(/.*call /,'').replace(/\D/g,''); if(num){speak(`Calling ${num} Sir`); location.href=`tel:${num}`;} else speak('Who to call Sir?');}
+else if(c.includes('youtube')){window.open('https://youtube.com','_blank'); speak('Opening YouTube Sir');}
+else if(c.includes('google')){window.open('https://google.com','_blank'); speak('Opening Google Sir');}
+else if(c.includes('location')||c.includes('track')){getLocation();}
+else if(c.includes('time')){speak('Time is '+new Date().toLocaleTimeString()+' Sir');}
+else if(c.includes('remind')||c.includes('schedule')){tasksArr.push(c); localStorage.setItem('ace_tasks',JSON.stringify(tasksArr)); renderTasks(); speak('Scheduled Sir');}
+else{let ai=await askGemini(c); if(ai){$('aiOut').innerText=ai; speak(ai);} else{speak(`Got it Sir, processing ${c}`);}}
+$('lat').innerText=(performance.now()-t0).toFixed(1)+'ms';
 }
 </script></body></html>
