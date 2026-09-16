@@ -1,136 +1,80 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>ACE v5.1</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',monospace}
-body{background:#000;color:#00e5ff;height:100vh;overflow:hidden;display:flex;flex-direction:column}
-.top{margin:6px;border:1px solid #00e5ff66;padding:8px 12px;display:flex;justify-content:space-between;font-size:8px;background:#00111a;letter-spacing:1px}
-.main{flex:1;display:grid;grid-template-columns:260px 1fr 260px;gap:6px;padding:0 6px 6px}
-.card{border:1px solid #00e5ff33;background:linear-gradient(180deg,#001a2a88,#000c);padding:8px;border-radius:6px;box-shadow:0 0 15px #00e5ff11}
-.card h3{font-size:9px;letter-spacing:1.5px;color:#00e5ff;border-bottom:1px solid #00e5ff22;padding-bottom:4px;margin-bottom:6px}
-.center{display:flex;flex-direction:column;align-items:center;justify-content:center}
-.core{width:280px;height:280px;border-radius:50%;border:2px solid #00e5ff;box-shadow:0 0 60px #00e5ff, inset 0 0 30px #00e5ff33;display:flex;align-items:center;justify-content:center;animation:pulse 2.5s infinite}
-.core.active{box-shadow:0 0 90px #00e5ff, inset 0 0 50px #00e5ff55;transform:scale(1.03)}
-.dot{width:18px;height:18px;background:#00e5ff;border-radius:50%;box-shadow:0 0 20px #00e5ff}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
-h1{font-size:48px;letter-spacing:16px;margin-top:18px;text-shadow:0 0 25px #00e5ff}
-#status{color:#fff;font-size:11px;margin-top:8px;text-align:center;max-width:380px;min-height:16px}
-.btn{border:1px solid #00e5ff;background:transparent;color:#00e5ff;padding:7px 14px;border-radius:18px;font-size:8px;letter-spacing:1.5px;cursor:pointer;margin:3px}
-.btn.active{background:#00e5ff;color:#000;box-shadow:0 0 15px #00e5ff}
-.small{font-size:8.5px;color:#9fdfff;line-height:1.5}
-.bar{height:5px;background:#001a22;border-radius:3px;overflow:hidden;margin:3px 0}
-.fill{height:100%;background:linear-gradient(90deg,#00e5ff,#00ff88);transition:.3s}
-.log{font-size:7.5px;line-height:1.4;color:#7fc8ff;max-height:95px;overflow:auto;background:#0008;padding:4px;border-radius:3px}
-.wave{display:flex;gap:2px;height:28px;align-items:end;justify-content:center;margin-top:8px}
-.wave span{width:3px;background:#00e5ff;height:3px;display:inline-block}
-.wave.active span{animation:w.5s infinite}
-@keyframes w{0%,100%{height:3px}50%{height:26px}}
-input{width:100%;background:#000;border:1px solid #00e5ff33;color:#fff;padding:5px;font-size:8px;margin-top:4px;border-radius:3px}
-.unlocked{color:#00ff88}.locked{color:#ff4444}
-</style></head><body>
-<div class="top"><span>ACE v5.1 FINAL // JARVIS • 1TB • VOICE LOCK • GEMINI + ELEVENLABS JARVIS VOICE</span><span id="clock"></span></div>
-<div class="main">
-<div style="display:flex;flex-direction:column;gap:6px">
-<div class="card"><h3>🔒 KEYS & VOICE ID - SECURE</h3><div class="small" style="color:#ffcc00">⚠️ Keys stored ONLY on this phone, never on GitHub! Bots scan GitHub!</div>
-<button class="btn" onclick="setKeys()" style="width:100%;margin-top:6px;background:#00e5ff22">SET API KEYS + VOICE ID</button>
-<div class="small" id="keyStat" style="margin-top:6px">Gemini: ❌ Not set<br>ElevenLabs Key: ❌ Not set<br>Voice ID: pNInz6obpgDQGcFmaJgB (Adam - Jarvis)</div>
-<div class="small" id="lockStat" style="margin-top:6px">Voice Lock: <span class="locked">🔒 Not enrolled</span></div>
-<button class="btn" onclick="enrollVoice()">ENROLL MY VOICE</button>
-</div>
-<div class="card"><h3>● SYSTEM STATUS</h3><div class="small">ACE: <span style="color:#0f8">ONLINE</span> • LAT: <span id="lat" style="color:#0f8">0.3ms</span><br>POWER 98.7% <div class="bar"><div class="fill" style="width:98%"></div></div>PHONE: <span style="color:#0f8">LINKED</span> • BAT: <span id="bat">--</span></div></div>
-<div class="card"><h3>🧠 MEMORY 1TB</h3><div class="small">USED: <span id="memU">214GB</span> • FREE: 298GB<div class="bar"><div class="fill" id="memBar" style="width:42%"></div></div>LEARNED: <span id="learnC">0</span> commands<br>MODE: HUMANLIKE JARVIS</div></div>
-</div>
-<div class="center">
-<div class="core" id="core"><div class="dot"></div></div>
-<h1>ACE</h1>
-<div id="status">Tap SET KEYS first, then START ACE Sir</div>
-<div class="wave" id="wave"><span></span><span></span><span></span><span></span><span></span></div>
-<div style="margin-top:10px"><button class="btn active" id="startBtn" onclick="startAce()">START ACE</button><button class="btn" onclick="stopAce()">SLEEP</button><button class="btn" onclick="teachAce()">TEACH ACE</button></div>
-<div class="small" style="margin-top:8px;text-align:center">Voice: Open WhatsApp • Call 123 • Track location • Time • Remind me 6pm • Search Elon</div>
-</div>
-<div style="display:flex;flex-direction:column;gap:6px">
-<div class="card"><h3>📋 TASKS</h3><div id="tasks" class="small">No tasks</div><input id="taskIn" placeholder="Add task..."></div>
-<div class="card"><h3>📍 LOCATION</h3><div class="small" id="locInfo">Tap TRACK<br><button class="btn" onclick="getLocation()">TRACK LOCATION</button></div></div>
-<div class="card"><h3>🤖 AI BRAIN</h3><div class="small" id="aiOut">With Gemini key: ACE answers anything humanlike. Without: offline brain.</div></div>
-<div class="card"><h3>LOGS</h3><div id="logs" class="log">[OK] ACE v5.1 FINAL<br>[OK] Secure storage ready<br>[OK] Awaiting keys</div></div>
-</div>
-</div>
-<script>
-let synth=window.speechSynthesis, recog, listening=false, audioCtx, analyser, lastClap=0, tasksArr=JSON.parse(localStorage.getItem('ace_tasks')||'[]');
-let GEMINI_KEY=localStorage.getItem('ace_gemini')||'';
-let ELEVEN_KEY=localStorage.getItem('ace_eleven')||'';
-let VOICE_ID=localStorage.getItem('ace_voice_id')||'pNInz6obpgDQGcFmaJgB';
-let voiceProfile=JSON.parse(localStorage.getItem('ace_voice_profile')||'null');
-const $=id=>document.getElementById(id);
-function log(m){$('logs').innerHTML=`[${new Date().toLocaleTimeString()}] ${m}<br>`+$('logs').innerHTML;}
-function clock(){$('clock').innerText=new Date().toLocaleString();} setInterval(clock,1000); clock();
-if(navigator.getBattery){navigator.getBattery().then(b=>{let u=()=>{$('bat').innerText=Math.round(b.level*100)+'%'+(b.charging?' ⚡':'')}; u(); b.addEventListener('levelchange',u);});}
-function checkKeys(){
-$('keyStat').innerHTML=`Gemini: ${GEMINI_KEY?'✅ Set':'❌ Not set'}<br>ElevenLabs: ${ELEVEN_KEY?'✅ Set':'❌ Not set'}<br>Voice ID: ${VOICE_ID.slice(0,12)}... (${VOICE_ID=='pNInz6obpgDQGcFmaJgB'?'Adam-Jarvis':'Custom'})<br><small style="color:#aaa">Keys are local only, never on GitHub</small>`;
-updateMem();
-}
-checkKeys();
-function setKeys(){
-let g=prompt('Step 1/3 - PASTE Gemini API Key (from aistudio.google.com/app/apikey)\nStored ONLY on this phone:',GEMINI_KEY||'');
-if(g!==null){localStorage.setItem('ace_gemini',g.trim()); GEMINI_KEY=g.trim();}
-let e=prompt('Step 2/3 - PASTE ElevenLabs API Key (sk_... from elevenlabs.io Profile > API Keys)\nStored ONLY on this phone:',ELEVEN_KEY||'');
-if(e!==null){localStorage.setItem('ace_eleven',e.trim()); ELEVEN_KEY=e.trim();}
-let v=prompt('Step 3/3 - PASTE ElevenLabs Voice ID\nFor Jarvis use: pNInz6obpgDQGcFmaJgB (Adam)\nOr get from Voices > Voice Library > Click Voice > Voice ID:',VOICE_ID||'pNInz6obpgDQGcFmaJgB');
-if(v!==null){localStorage.setItem('ace_voice_id',v.trim()); VOICE_ID=v.trim();}
-checkKeys(); log('Keys + Voice ID saved locally - SECURE');
-speak('Keys saved securely on this phone only Sir, never on GitHub');
-}
-function updateMem(){let used=JSON.stringify(localStorage).length; $('memU').innerText=(214+used/8000).toFixed(1)+'GB'; $('memBar').style.width=Math.min(95,42+used/5000)+'%'; $('learnC').innerText=Object.keys(JSON.parse(localStorage.getItem('ace_memory')||'{}')).length;}
-function renderTasks(){if(tasksArr.length==0){$('tasks').innerHTML='No tasks Sir';}else{$('tasks').innerHTML=tasksArr.map((t,i)=>`• ${t} <span style="color:#f44;cursor:pointer" onclick="tasksArr.splice(${i},1);localStorage.setItem('ace_tasks',JSON.stringify(tasksArr));renderTasks()">[x]</span>`).join('<br>');}} renderTasks();
-$('taskIn').addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.value){tasksArr.push(e.target.value); localStorage.setItem('ace_tasks',JSON.stringify(tasksArr)); e.target.value=''; renderTasks(); speak('Task added Sir');}});
-async function speakEleven(text){
-if(!ELEVEN_KEY){return false;}
-try{
-let res=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}/`,{
-method:'POST',
-headers:{'xi-api-key':ELEVEN_KEY,'Content-Type':'application/json'},
-body:JSON.stringify({text,model_id:'eleven_turbo_v2_5',voice_settings:{stability:0.6,similarity_boost:0.85,style:0.5,use_speaker_boost:true}})
-});
-if(!res.ok){let err=await res.text(); log('ElevenLabs Error: '+err.slice(0,80)); return false;}
-let blob=await res.blob(); let url=URL.createObjectURL(blob); let audio=new Audio(url); audio.play();
-$('status').innerText=text; log('ACE JARVIS VOICE: '+text); return true;
-}catch(e){log('ElevenLabs fail: '+e); return false;}
-}
-async function speak(text){
-let ok=await speakEleven(text);
-if(ok) return;
-synth.cancel(); let u=new SpeechSynthesisUtterance(text); let vs=synth.getVoices(); let v=vs.find(x=>x.name.includes('Google')&&x.lang.startsWith('en'))||vs[0]; if(v) u.voice=v; u.rate=1.1; u.pitch=0.85; $('status').innerText=text; log('ACE native: '+text); synth.speak(u);
-}
-async function askGemini(prompt){
-if(!GEMINI_KEY){return null;}
-try{
-let r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,{
-method:'POST',headers:{'Content-Type':'application/json'},
-body:JSON.stringify({contents:[{parts:[{text:`You are ACE, Jarvis-like AI assistant. Be human, fast, friendly, call user Sir. Concise but natural, 2-3 sentences. Prompt: ${prompt}` }]}]})
-});
-let j=await r.json(); return j.candidates?.[0]?.content?.parts?.[0]?.text||null;
-}catch(e){log('Gemini error'); return null;}
-}
-function enrollVoice(){let phrase=prompt('Sir, secret phrase for voice lock (ex: Ace authorize alpha)'); if(!phrase) return; let samples=[]; alert('I will listen 3 times. Say: '+phrase); let count=0; let SR=window.SpeechRecognition||window.webkitSpeechRecognition; let rec=new SR(); rec.lang='en-US'; rec.onresult=(e)=>{samples.push(e.results[0][0].transcript.toLowerCase()); count++; log(`Sample ${count}/3: ${samples[count-1]}`); if(count<3){setTimeout(()=>{speak(`Again Sir, say ${phrase}`); rec.start();},1000);}else{voiceProfile={phrase:phrase.toLowerCase(),samples}; localStorage.setItem('ace_voice_profile',JSON.stringify(voiceProfile)); $('lockStat').innerHTML=`Voice Lock: <span class="unlocked">🔓 LOCKED to Sir - ${phrase}</span>`; speak('Voice print enrolled Sir');}}; rec.start(); speak(`Listening Sir, say ${phrase}`);}
-if(voiceProfile){$('lockStat').innerHTML=`Voice Lock: <span class="unlocked">🔓 LOCKED to Sir - ${voiceProfile.phrase}</span>`;}
-async function initClap(){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)(); let s=await navigator.mediaDevices.getUserMedia({audio:true}); let src=audioCtx.createMediaStreamSource(s); analyser=audioCtx.createAnalyser(); analyser.fftSize=256; src.connect(analyser); let data=new Uint8Array(analyser.frequencyBinCount); let check=()=>{if(!listening) return; analyser.getByteFrequencyData(data); let vol=data.reduce((a,b)=>a+b)/data.length; if(vol>75){let now=Date.now(); if(now-lastClap<700&&now-lastClap>120){log('👏👏 2 CLAPS'); speak('Yes Sir, Ace listening');} lastClap=now;} requestAnimationFrame(check);}; check();}catch(e){}}
-function startAce(){if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){speak('Use Chrome Sir'); return;} let SR=window.SpeechRecognition||window.webkitSpeechRecognition; recog=new SR(); recog.continuous=true; recog.lang='en-US'; recog.onstart=()=>{listening=true; $('startBtn').innerText='LISTENING'; $('wave').classList.add('active'); $('core').classList.add('active'); log('VOICE + CLAP ACTIVE'); initClap();}; recog.onresult=async(e)=>{let cmd=e.results[e.results.length-1][0].transcript.toLowerCase().trim(); log('YOU: '+cmd); if(cmd.includes('hey ace')&&cmd.length<15){speak('Yes Sir, how can I help? I am Ace'); return;} await handle(cmd);}; recog.onend=()=>{if(listening) try{recog.start();}catch{}}; recog.start(); speak('Ace five point one final online Sir, secure, voice locked, five twelve gigabytes, how may I assist?');}
-function stopAce(){listening=false; if(recog) recog.stop(); $('wave').classList.remove('active'); $('core').classList.remove('active'); $('startBtn').innerText='START ACE'; speak('Ace sleeping Sir');}
-function teachAce(){let q=prompt('Teach: trigger -> response'); if(!q) return; let mem=JSON.parse(localStorage.getItem('ace_memory')||'{}'); if(q.includes('->')){let [k,v]=q.split('->'); mem[k.trim().toLowerCase()]=v.trim();} else mem[q.toLowerCase()]='Got it Sir '+q; localStorage.setItem('ace_memory',JSON.stringify(mem)); updateMem(); speak('Learned Sir');}
-async function getLocation(){navigator.geolocation.getCurrentPosition(p=>{$('locInfo').innerHTML=`${p.coords.latitude.toFixed(5)}, ${p.coords.longitude.toFixed(5)}<br><button class="btn" onclick="window.open('https://maps.google.com/?q=${p.coords.latitude},${p.coords.longitude}','_blank')">OPEN MAPS</button>`; speak('Location tracked Sir');});}
-async function handle(c){
-let t0=performance.now();
-let mem=JSON.parse(localStorage.getItem('ace_memory')||'{}');
-for(let k in mem){if(c.includes(k)){speak(mem[k]); return;}}
-if(c.includes('open whatsapp')){speak('Opening WhatsApp Sir'); window.open('https://wa.me/','_blank');}
-else if(c.includes('call')){let num=c.replace(/.*call /,'').replace(/\D/g,''); if(num){speak(`Calling ${num} Sir`); location.href=`tel:${num}`;} else speak('Who to call Sir?');}
-else if(c.includes('youtube')){window.open('https://youtube.com','_blank'); speak('Opening YouTube Sir');}
-else if(c.includes('google')){window.open('https://google.com','_blank'); speak('Opening Google Sir');}
-else if(c.includes('location')||c.includes('track')){getLocation();}
-else if(c.includes('time')){speak('Time is '+new Date().toLocaleTimeString()+' Sir');}
-else if(c.includes('remind')||c.includes('schedule')){tasksArr.push(c); localStorage.setItem('ace_tasks',JSON.stringify(tasksArr)); renderTasks(); speak('Scheduled Sir');}
-else{let ai=await askGemini(c); if(ai){$('aiOut').innerText=ai; speak(ai);} else{speak(`Got it Sir, processing ${c}`);}}
-$('lat').innerText=(performance.now()-t0).toFixed(1)+'ms';
-}
-</script></body></html>
+import os
+import google.generativeai as genai
+import gradio as gr
+
+# Secure key from Replit Secrets
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
+genai.configure(api_key=GOOGLE_API_KEY)
+MODEL = "gemini-1.5-flash"
+
+# --- IDENTITY SYSTEM (your 5 .md files) ---
+SOUL = "You are JARVIS V1. Purpose: Helpful, calm, capable. Traits: concise, loyal, secure-by-default."
+IDENTITY = "You are Manager Agent controlling Research, Coding, Writing specialists."
+STYLE = "Futuristic, concise, Stark-tech. Use bullets for plans, code blocks for code."
+MEMORY = []
+
+def research_agent(task):
+    m = genai.GenerativeModel(MODEL, system_instruction=SOUL + " You are Research Agent.")
+    return m.generate_content(f"RESEARCH TASK: {task}. Give clear summary.").text
+
+def coding_agent(task):
+    m = genai.GenerativeModel(MODEL, system_instruction=SOUL + " You are Coding Agent. Write clean, commented Python.")
+    return m.generate_content(task).text
+
+def writing_agent(task):
+    m = genai.GenerativeModel(MODEL, system_instruction=SOUL + " You are Writing Agent.")
+    return m.generate_content(task).text
+
+def planner_agent(task):
+    m = genai.GenerativeModel(MODEL, system_instruction=SOUL + " You are Planner Agent. Break task into steps.")
+    return m.generate_content(f"Create step-by-step plan for: {task}").text
+
+def review_agent(draft):
+    m = genai.GenerativeModel(MODEL, system_instruction=SOUL + " You are Review Agent. Critique and improve.")
+    return m.generate_content(f"Review and improve: {draft}").text
+
+def manager_route(user_input, history):
+    # Manager decides
+    classifier = genai.GenerativeModel(MODEL)
+    intent = classifier.generate_content(
+        f"Classify '{user_input}' as RESEARCH, CODING, WRITING, PLANNING, or GENERAL. One word only."
+    ).text.strip().upper()
+    
+    print(f"Manager routing -> {intent}")
+
+    if "RESEARCH" in intent:
+        result = research_agent(user_input)
+    elif "CODING" in intent:
+        result = coding_agent(user_input)
+    elif "WRITING" in intent:
+        result = writing_agent(user_input)
+    elif "PLANNING" in intent:
+        result = planner_agent(user_input)
+    else:
+        base = genai.GenerativeModel(MODEL, system_instruction=SOUL + "\n" + STYLE)
+        result = base.generate_content(user_input).text
+
+    MEMORY.append({"user": user_input, "jarvis": result})
+    return result
+
+# --- FUTURISTIC UI ---
+with gr.Blocks(theme=gr.themes.Monochrome(), title="JARVIS V1") as demo:
+    gr.Markdown("""
+    # J.A.R.V.I.S V1
+    ### MANAGER → RESEARCH | CODING | WRITING | PLANNER | REVIEW
+    ### MEMORY + IDENTITY SYSTEM ACTIVE
+    """)
+    
+    chatbot = gr.Chatbot(height=450, label="JARVIS Terminal")
+    msg = gr.Textbox(label="Command JARVIS", placeholder="Ex: research quantum computing and create a report")
+    clear = gr.Button("Clear Memory")
+    
+    msg.submit(manager_route, [msg, chatbot], chatbot)
+    msg.submit(lambda: "", None, msg) # clear input
+    
+    def clear_mem():
+        MEMORY.clear()
+        return []
+    clear.click(clear_mem, outputs=chatbot)
+
+demo.launch()
